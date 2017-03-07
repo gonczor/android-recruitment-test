@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -46,8 +44,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onDownloadItemsHandleSuccessfulResponse(Response<List<Item>> response){
-        TextView tv = (TextView) findViewById(R.id.empty_list_tv);
-        tv.setText(response.body().toString());
+        for(Item i : (List<Item>)response.body()){
+            // TODO saving to database
+        }
     }
 
     private void onDownloadItemsHandleUnsuccessfulResponse(Response<List<Item>> response){
