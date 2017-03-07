@@ -2,14 +2,14 @@ package dog.snow.androidrecruittest.model;
 
 
 public class Item {
-    public Long id;
-    public String name;
-    public String description;
-    public String icon;
-    public Long timestamp;
-    public String url;
+    private Long id;
+    private String name;
+    private String description;
+    private String icon;
+    private Long timestamp;
+    private String url;
 
-    public Item(Long id, String name, String description, String icon, Long timestamp, String url) {
+    private Item(Long id, String name, String description, String icon, Long timestamp, String url) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -28,5 +28,49 @@ public class Item {
                 ", timestamp=" + timestamp +
                 ", url='" + url + '\'' +
                 '}';
+    }
+
+    private static class Builder{
+
+        private Long id;
+        private String name;
+        private String description;
+        private String icon;
+        private Long timestamp;
+        private String url;
+
+        public Builder setId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder setIcon(String icon) {
+            this.icon = icon;
+            return this;
+        }
+
+        public Builder setTimestamp(Long timestamp) {
+            this.timestamp = timestamp;
+            return this;
+        }
+
+        public Builder setUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
+        public Item build() {
+            return new Item(id, name, description, icon, timestamp, url);
+        }
     }
 }

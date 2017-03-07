@@ -1,8 +1,5 @@
 package dog.snow.androidrecruittest.rest;
 
-import java.io.IOException;
-
-import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -10,8 +7,6 @@ public class ApiClient {
     private static final String BASE_URL = "http://192.168.2.184:8080/api/";
     private static Retrofit retrofit = null;
 
-
-    private ApiClient(){}
 
     public static Retrofit getClient() {
         if (retrofit==null) {
@@ -21,13 +16,5 @@ public class ApiClient {
                     .build();
         }
         return retrofit;
-    }
-
-    static class DynamicResponseConverter implements Converter{
-
-        @Override
-        public Object convert(Object value) throws IOException {
-            return null;
-        }
     }
 }
