@@ -1,7 +1,8 @@
 package dog.snow.androidrecruittest.model;
 
 
-public class Item {
+public class Item{
+
     private Long id;
     private String name;
     private String description;
@@ -16,6 +17,31 @@ public class Item {
         this.icon = icon;
         this.timestamp = timestamp;
         this.url = url;
+    }
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public String getUrl() {
+        return url;
     }
 
     @Override
