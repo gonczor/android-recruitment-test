@@ -5,12 +5,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import java.io.IOException;
 import java.util.List;
 
 import dog.snow.androidrecruittest.model.Item;
+import dog.snow.androidrecruittest.model.ServerResponse;
 import dog.snow.androidrecruittest.rest.ApiClient;
 import dog.snow.androidrecruittest.rest.ApiInterface;
-import dog.snow.androidrecruittest.rest.ItemsResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,19 +27,26 @@ public class MainActivity extends AppCompatActivity {
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-        Call<List<Item>> call = apiService.getItems();
-
-        call.enqueue(new Callback<List<Item>>() {
+        apiService.getItems().enqueue(new Callback<List<Item>>() {
             @Override
             public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
-                TextView textView = (TextView)findViewById(R.id.empty_list_tv);
-                textView.setText(response.toString());
+                TextView tv = (TextView) findViewById(R.id.empty_list_tv);
+                if (response.isSuccessful()) {
+                    tv.setText(response.body().toString());
+                } else {
+                    try {
+                        tv.setText(response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
 
             @Override
             public void onFailure(Call<List<Item>> call, Throwable t) {
-                Log.e("TAG", t.getMessage());
+                Log.e("MainActivity", t.getMessage());
             }
         });
     }
+
 }
