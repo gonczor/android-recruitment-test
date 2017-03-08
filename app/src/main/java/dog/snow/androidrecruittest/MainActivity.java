@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         downloadItems();
+        showItemsFromDatabase();
     }
 
     private void downloadItems(){
@@ -64,5 +65,9 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void showItemsFromDatabase(){
+
     }
 }
