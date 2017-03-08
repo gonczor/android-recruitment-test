@@ -11,8 +11,15 @@ import dog.snow.androidrecruittest.model.Item;
 
 public class ItemDatabaseHelper extends SQLiteOpenHelper {
 
-    private static final String DB_NAME = "ITEM";
+    public static final String DB_NAME = "ITEM";
+    public static final String COLUMN_NAME = "NAME";
+    public static final String COLUMN_DESCRIPTION = "DESCRIPTION";
+    public static final String COLUMN_ICON = "ICON";
+    public static final String COLUMN_TIMESTAMP = "TIMESTAMP";
+    public static final String COLUMN_URL = "URL";
+
     private static final int DB_VERSION = 1;
+    private SQLiteDatabase database;
 
     private ItemDatabaseHelper(Context context,
                                String name,
@@ -40,7 +47,15 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
                 "URL TEXT)");
     }
 
-    public void insertItem(SQLiteDatabase db, Item item){
+    public void openDatabase(){
+        database = this.getWritableDatabase();
+    }
+
+    public void closeDatabase(){
+        database.close();
+    }
+
+    public void insertItem(Item item){
         ContentValues contentValues = new ContentValues();
         contentValues.put("_id", item.getId());
         contentValues.put("NAME", item.getName());
@@ -48,7 +63,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         contentValues.put("ICON", item.getIcon());
         contentValues.put("TIMESTAMP", item.getTimestamp());
         contentValues.put("URL", item.getUrl());
-        db.insert(DB_NAME, null, contentValues);
+        database.insert(DB_NAME, null, contentValues);
     }
 
     @Override

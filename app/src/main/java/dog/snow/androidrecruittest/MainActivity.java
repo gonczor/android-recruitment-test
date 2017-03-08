@@ -8,6 +8,7 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.util.List;
 
+import dog.snow.androidrecruittest.database.ItemDatabaseHelper;
 import dog.snow.androidrecruittest.model.Item;
 import dog.snow.androidrecruittest.rest.ApiClient;
 import dog.snow.androidrecruittest.rest.ApiInterface;
@@ -44,9 +45,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onDownloadItemsHandleSuccessfulResponse(Response<List<Item>> response){
-        for(Item i : (List<Item>)response.body()){
-            // TODO saving to database
+        ItemDatabaseHelper helper = new ItemDatabaseHelper.Builder()
+                .setContext(this)
+                .build();
+        helper.openDatabase();
+
+        for(Item i : response.body()){
+            helper.insertItem(i);
         }
+
+        helper.closeDatabase();
     }
 
     private void onDownloadItemsHandleUnsuccessfulResponse(Response<List<Item>> response){
