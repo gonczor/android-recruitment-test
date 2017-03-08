@@ -63,7 +63,15 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         contentValues.put("ICON", item.getIcon());
         contentValues.put("TIMESTAMP", item.getTimestamp());
         contentValues.put("URL", item.getUrl());
-        database.insert(DB_NAME, null, contentValues);
+        long result = database.insertWithOnConflict("ITEM",
+                null,
+                contentValues,
+                SQLiteDatabase.CONFLICT_IGNORE);
+
+        if(result == -1){
+            String[] ids = {item.getId().toString()};
+            database.update("ITEM", contentValues, "_id=?", ids);
+        }
     }
 
     @Override
