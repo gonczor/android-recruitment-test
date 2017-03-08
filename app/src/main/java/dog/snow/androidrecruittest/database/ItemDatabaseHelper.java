@@ -10,7 +10,7 @@ import dog.snow.androidrecruittest.model.Item;
 
 
 public class ItemDatabaseHelper extends SQLiteOpenHelper {
-
+    
     public static final String DB_NAME = "ITEM";
     public static final String COLUMN_NAME = "NAME";
     public static final String COLUMN_DESCRIPTION = "DESCRIPTION";
@@ -58,11 +58,11 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     public void insertItem(Item item){
         ContentValues contentValues = new ContentValues();
         contentValues.put("_id", item.getId());
-        contentValues.put("NAME", item.getName());
-        contentValues.put("DESCRIPTION", item.getDescription());
-        contentValues.put("ICON", item.getIcon());
-        contentValues.put("TIMESTAMP", item.getTimestamp());
-        contentValues.put("URL", item.getUrl());
+        contentValues.put(COLUMN_NAME, item.getName());
+        contentValues.put(COLUMN_DESCRIPTION, item.getDescription());
+        contentValues.put(COLUMN_ICON, item.getIcon());
+        contentValues.put(COLUMN_TIMESTAMP, item.getTimestamp());
+        contentValues.put(COLUMN_URL, item.getUrl());
         long result = database.insertWithOnConflict("ITEM",
                 null,
                 contentValues,
