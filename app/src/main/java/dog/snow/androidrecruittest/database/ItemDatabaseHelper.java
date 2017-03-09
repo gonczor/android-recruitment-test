@@ -2,9 +2,13 @@ package dog.snow.androidrecruittest.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import dog.snow.androidrecruittest.model.Item;
 
@@ -72,6 +76,33 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
             String[] ids = {item.getId().toString()};
             database.update("ITEM", contentValues, "_id=?", ids);
         }
+    }
+
+    public List<Item> selectAllItems(){
+        List<Item> items = new ArrayList<>();
+        database = this.getReadableDatabase();
+
+        Cursor cursor = this.database.query("ITEM", new String[]{"*"}, null, null, null, null, null);
+
+        if(cursor.moveToFirst()){
+            do{
+                Item item = new Item.Builder()
+                        .setId(cursor.getLong(0))
+                        .setName(cursor.getString(1))
+                        .setDescription(cursor.getString(2))
+                        .setIcon(cursor.getString(3))
+                        .setTimestamp(cursor.getLong(4))
+                        .setUrl(cursor.getString(5))
+                        .build();
+                items.add(item);
+            }while (cursor.moveToNext());
+        }
+
+        if(!cursor.isClosed())
+            cursor.close();
+
+        database.close();
+        return items;
     }
 
     @Override
