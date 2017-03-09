@@ -4,13 +4,12 @@ package dog.snow.androidrecruittest.model.error;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ErrorResponse {
-    @SerializedName("error")
+public class ErrorStatus {
+    @SerializedName("status")
     @Expose
-    private Error error;
+    private Integer status;
 
-
-    public Error getError() {
-        return error;
+    public Integer getStatus(){
+        return status;
     }
 }
