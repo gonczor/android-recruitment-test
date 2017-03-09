@@ -1,4 +1,4 @@
-package dog.snow.androidrecruittest;
+package dog.snow.androidrecruittest.views;
 
 
 import android.content.Context;
@@ -13,14 +13,15 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import dog.snow.androidrecruittest.R;
 import dog.snow.androidrecruittest.model.Item;
 
-class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
+public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     private List<Item> itemList;
     private Context context;
 
-    ItemAdapter(List<Item> items){
+    public ItemAdapter(List<Item> items){
         this.itemList = items;
     }
 
