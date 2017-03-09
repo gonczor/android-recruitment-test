@@ -2,6 +2,9 @@ package dog.snow.androidrecruittest;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -17,11 +20,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
+    private ItemDatabaseHelper helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        helper = new ItemDatabaseHelper.Builder()
+                .setContext(this)
+                .build();
         downloadItems();
         showItemsFromDatabase();
     }
@@ -46,9 +53,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onDownloadItemsHandleSuccessfulResponse(Response<List<Item>> response){
-        ItemDatabaseHelper helper = new ItemDatabaseHelper.Builder()
-                .setContext(this)
-                .build();
         helper.openDatabase();
 
         for(Item i : response.body()){
@@ -68,6 +72,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showItemsFromDatabase(){
-
+        List<Item> items = helper.selectAllItems();
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.items_rv);
+        ItemAdapter itemAdapter = new ItemAdapter(items);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(itemAdapter);
     }
 }
