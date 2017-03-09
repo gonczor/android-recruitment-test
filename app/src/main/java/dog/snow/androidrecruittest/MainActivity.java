@@ -1,5 +1,6 @@
 package dog.snow.androidrecruittest;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -25,16 +26,27 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private ItemDatabaseHelper helper;
+    private SwipeRefreshLayout swipeContainer;
+    private ItemAdapter itemAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        swipeContainer =  (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         helper = new ItemDatabaseHelper.Builder()
                 .setContext(this)
                 .build();
         downloadItems();
         showItemsFromDatabase();
+
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                downloadItems();
+                swipeContainer.setRefreshing(false);
+            }
+        });
     }
 
     private void downloadItems(){
@@ -58,11 +70,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void onDownloadItemsHandleSuccessfulResponse(Response<List<Item>> response){
         helper.openDatabase();
-
         for(Item i : response.body()){
             helper.insertItem(i);
         }
-
         helper.closeDatabase();
     }
 
@@ -84,7 +94,10 @@ public class MainActivity extends AppCompatActivity {
     private void showItemsFromDatabase(){
         List<Item> items = helper.selectAllItems();
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.response_rv);
-        ItemAdapter itemAdapter = new ItemAdapter(items);
+        if(itemAdapter == null)
+            itemAdapter = new ItemAdapter();
+        itemAdapter.clear();
+        itemAdapter.addAll(items);
         setupRecyclerView(recyclerView, itemAdapter);
     }
 

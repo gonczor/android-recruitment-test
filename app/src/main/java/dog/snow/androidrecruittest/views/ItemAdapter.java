@@ -21,10 +21,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     private List<Item> itemList;
     private Context context;
 
-    public ItemAdapter(List<Item> items){
-        this.itemList = items;
-    }
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
@@ -47,12 +43,16 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     }
 
     public void clear(){
-        itemList.clear();
+        if(itemList != null)
+            itemList.clear();
         notifyDataSetChanged();
     }
 
     public void addAll(List<Item> items){
-        itemList.addAll(items);
+        if(itemList == null)
+            itemList = items;
+        else
+            itemList.addAll(items);
         notifyDataSetChanged();
     }
 
