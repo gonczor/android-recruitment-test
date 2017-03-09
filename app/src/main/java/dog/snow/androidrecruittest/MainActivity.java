@@ -6,15 +6,19 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.TextView;
+
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.List;
 
 import dog.snow.androidrecruittest.database.ItemDatabaseHelper;
 import dog.snow.androidrecruittest.model.Item;
+import dog.snow.androidrecruittest.model.error.ErrorResponse;
 import dog.snow.androidrecruittest.rest.ApiClient;
 import dog.snow.androidrecruittest.rest.ApiInterface;
+import dog.snow.androidrecruittest.views.ErrorAdapter;
+import dog.snow.androidrecruittest.views.ItemAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,17 +67,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onDownloadItemsHandleUnsuccessfulResponse(Response<List<Item>> response){
-        TextView tv = (TextView) findViewById(R.id.empty_list_tv);
         try {
-            tv.setText(response.errorBody().string());
+            Gson gson = new Gson();
+            ErrorResponse errorResponse = gson.fromJson(response.errorBody().string(),
+                    ErrorResponse.class);
+
+            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.response_rv);
+            ErrorAdapter adapter = new ErrorAdapter(errorResponse);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(adapter);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("UNSUCCESSFUL RESPONSE", e.getMessage());
         }
     }
 
     private void showItemsFromDatabase(){
         List<Item> items = helper.selectAllItems();
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.items_rv);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.response_rv);
         ItemAdapter itemAdapter = new ItemAdapter(items);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
