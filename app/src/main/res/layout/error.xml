@@ -5,14 +5,12 @@
 
     <TextView
         android:id="@+id/error_message"
-        android:text="Not found"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/error_code"
-        android:text="404"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
