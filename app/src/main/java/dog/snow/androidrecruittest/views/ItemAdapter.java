@@ -46,6 +46,16 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         return itemList.size();
     }
 
+    public void clear(){
+        itemList.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addAll(List<Item> items){
+        itemList.addAll(items);
+        notifyDataSetChanged();
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder{
         TextView name, description;
         ImageView icon;
