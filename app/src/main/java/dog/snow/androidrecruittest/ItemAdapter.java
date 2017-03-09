@@ -1,12 +1,15 @@
 package dog.snow.androidrecruittest;
 
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -15,8 +18,9 @@ import dog.snow.androidrecruittest.model.Item;
 class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     private List<Item> itemList;
+    private Context context;
 
-    public ItemAdapter(List<Item> items){
+    ItemAdapter(List<Item> items){
         this.itemList = items;
     }
 
@@ -24,6 +28,7 @@ class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item, parent, false);
+        context = parent.getContext();
         return new ViewHolder(itemView);
     }
 
@@ -32,7 +37,7 @@ class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         Item item = itemList.get(position);
         holder.description.setText(item.getDescription());
         holder.name.setText(item.getName());
-        // TODO set image
+        Picasso.with(context).load(item.getIcon()).into(holder.icon);
     }
 
     @Override
