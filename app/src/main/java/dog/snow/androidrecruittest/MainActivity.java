@@ -74,10 +74,8 @@ public class MainActivity extends AppCompatActivity {
 
             RecyclerView recyclerView = (RecyclerView) findViewById(R.id.response_rv);
             ErrorAdapter adapter = new ErrorAdapter(errorResponse);
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.setAdapter(adapter);
+            setupRecyclerView(recyclerView, adapter);
+
         } catch (IOException e) {
             Log.e("UNSUCCESSFUL RESPONSE", e.getMessage());
         }
@@ -87,9 +85,13 @@ public class MainActivity extends AppCompatActivity {
         List<Item> items = helper.selectAllItems();
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.response_rv);
         ItemAdapter itemAdapter = new ItemAdapter(items);
+        setupRecyclerView(recyclerView, itemAdapter);
+    }
+
+    private void setupRecyclerView(RecyclerView recyclerView, RecyclerView.Adapter adapter){
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(itemAdapter);
+        recyclerView.setAdapter(adapter);
     }
 }
