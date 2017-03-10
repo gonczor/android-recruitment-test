@@ -96,11 +96,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onDownloadItemsHandleSuccessfulResponse(Response<List<Item>> response){
-        helper.openDatabase();
-        for(Item i : response.body()){
-            helper.insertItem(i);
-        }
-        helper.closeDatabase();
+        helper.insertItems(response.body());
     }
 
     private void onDownloadItemsHandleUnsuccessfulResponse(Response<List<Item>> response){
