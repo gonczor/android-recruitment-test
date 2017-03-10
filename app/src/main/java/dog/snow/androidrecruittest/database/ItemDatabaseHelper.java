@@ -79,11 +79,29 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public List<Item> selectAllItems(){
-        List<Item> items = new ArrayList<>();
         database = this.getReadableDatabase();
-
         Cursor cursor = this.database.query("ITEM", new String[]{"*"}, null, null, null, null, null);
+        List<Item> items = loadItems(cursor);
+        if(!cursor.isClosed())
+            cursor.close();
 
+        database.close();
+        return items;
+    }
+
+    public List<Item>selectMatchingItems(String searched){
+        database = this.getReadableDatabase();
+        Cursor cursor = this.database.query("ITEM", new String[]{"*"}, null, null, null, null, null);
+        List<Item> items = loadItems(cursor);
+        if(!cursor.isClosed())
+            cursor.close();
+
+        database.close();
+        return items;
+    }
+
+    private List<Item> loadItems(Cursor cursor){
+        List<Item> items = new ArrayList<>();
         if(cursor.moveToFirst()){
             do{
                 Item item = new Item.Builder()
@@ -97,11 +115,6 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
                 items.add(item);
             }while (cursor.moveToNext());
         }
-
-        if(!cursor.isClosed())
-            cursor.close();
-
-        database.close();
         return items;
     }
 
