@@ -52,20 +52,20 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
                 "URL TEXT)");
     }
 
-    private void openDatabase(){
-        database = this.getWritableDatabase();
-    }
-
-    private void closeDatabase(){
-        database.close();
-    }
-
     public void insertItems(List<Item> items){
         openDatabase();
         for(Item i : items){
             insertItem(i);
         }
         closeDatabase();
+    }
+
+    private void openDatabase(){
+        database = this.getWritableDatabase();
+    }
+
+    private void closeDatabase(){
+        database.close();
     }
 
     private void insertItem(Item item){
