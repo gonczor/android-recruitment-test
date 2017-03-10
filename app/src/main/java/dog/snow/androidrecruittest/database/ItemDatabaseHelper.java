@@ -80,8 +80,8 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public List<Item> selectAllItems(){
-        database = this.getReadableDatabase();
-        Cursor cursor = this.database.query(TABLE_ITEM, new String[]{"*"}, null, null, null, null, null);
+        database = getReadableDatabase();
+        Cursor cursor = database.query(TABLE_ITEM, new String[]{"*"}, null, null, null, null, null);
         List<Item> items = loadItems(cursor);
         if(!cursor.isClosed())
             cursor.close();
@@ -91,8 +91,13 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public List<Item>selectMatchingItems(String searched){
-        database = this.getReadableDatabase();
-        Cursor cursor = this.database.query(TABLE_ITEM, new String[]{"*"}, null, null, null, null, null);
+        database = getReadableDatabase();
+        Cursor cursor = database.query(TABLE_ITEM,
+                new String[]{"*"},
+                "NAME LIKE ?",
+                new String[]{searched+"%"},
+                null, null, null);
+
         List<Item> items = loadItems(cursor);
         if(!cursor.isClosed())
             cursor.close();

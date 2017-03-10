@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -62,14 +63,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupEditorAction(){
         final EditText search = (EditText) findViewById(R.id.search_et);
-        search.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-
+        search.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId == EditorInfo.IME_ACTION_DONE){
-                    String searched = search.getText().toString();
-                    List<Item> foundItems = helper.selectMatchingItems(searched);
-                    showItems(foundItems);
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if((event.getAction()==KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)){
+                    String toSearch = search.getText().toString();
+                    List<Item> items = helper.selectMatchingItems(toSearch);
+                    showItems(items);
+                    return true;
                 }
                 return false;
             }
