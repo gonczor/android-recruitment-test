@@ -21,6 +21,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_ICON = "ICON";
     private static final String COLUMN_TIMESTAMP = "TIMESTAMP";
     private static final String COLUMN_URL = "URL";
+    private static final String TABLE_ITEM = "ITEM";
 
     private static final int DB_VERSION = 1;
     private SQLiteDatabase database;
@@ -67,20 +68,20 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COLUMN_ICON, item.getIcon());
         contentValues.put(COLUMN_TIMESTAMP, item.getTimestamp());
         contentValues.put(COLUMN_URL, item.getUrl());
-        long result = database.insertWithOnConflict("ITEM",
+        long result = database.insertWithOnConflict(TABLE_ITEM,
                 null,
                 contentValues,
                 SQLiteDatabase.CONFLICT_IGNORE);
 
         if(result == -1){
             String[] ids = {item.getId().toString()};
-            database.update("ITEM", contentValues, "_id=?", ids);
+            database.update(TABLE_ITEM, contentValues, "_id=?", ids);
         }
     }
 
     public List<Item> selectAllItems(){
         database = this.getReadableDatabase();
-        Cursor cursor = this.database.query("ITEM", new String[]{"*"}, null, null, null, null, null);
+        Cursor cursor = this.database.query(TABLE_ITEM, new String[]{"*"}, null, null, null, null, null);
         List<Item> items = loadItems(cursor);
         if(!cursor.isClosed())
             cursor.close();
@@ -91,7 +92,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
 
     public List<Item>selectMatchingItems(String searched){
         database = this.getReadableDatabase();
-        Cursor cursor = this.database.query("ITEM", new String[]{"*"}, null, null, null, null, null);
+        Cursor cursor = this.database.query(TABLE_ITEM, new String[]{"*"}, null, null, null, null, null);
         List<Item> items = loadItems(cursor);
         if(!cursor.isClosed())
             cursor.close();
