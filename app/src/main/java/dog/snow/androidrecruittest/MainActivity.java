@@ -33,13 +33,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        swipeContainer =  (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         helper = new ItemDatabaseHelper.Builder()
                 .setContext(this)
                 .build();
         downloadItems();
         showItemsFromDatabase();
+        setupSwipeContainer();
+        setupEditorAction();
+    }
 
+    private void setupSwipeContainer(){
+        swipeContainer =  (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -47,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
                 swipeContainer.setRefreshing(false);
             }
         });
+    }
+
+    private void setupEditorAction(){
+
     }
 
     private void downloadItems(){
