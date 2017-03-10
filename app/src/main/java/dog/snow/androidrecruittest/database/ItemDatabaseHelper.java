@@ -94,8 +94,8 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         database = getReadableDatabase();
         Cursor cursor = database.query(TABLE_ITEM,
                 new String[]{"*"},
-                "NAME LIKE ?",
-                new String[]{searched+"%"},
+                "NAME LIKE ? OR DESCRIPTION LIKE ?",
+                new String[]{"%" + searched + "%", "%" + searched + "%"},
                 null, null, null);
 
         List<Item> items = loadItems(cursor);
